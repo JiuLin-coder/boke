@@ -148,6 +148,7 @@ function publish() {
   maryDay.value = newMaryDay;
   // maryDay.value;//网络通信上传数据条
   // 不过没有后端，那就只能保存到本地了
+
   //清空maryDay
   maryDay.value = [];
 }
