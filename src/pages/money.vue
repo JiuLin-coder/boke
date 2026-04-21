@@ -48,7 +48,7 @@ export default {
     return {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
-      timeFreeList: [], //设置一个数据条:year,month,day,[free],sum
+      timeFreeList: [], //设置一个数据条:year,month,day,[free]
       manyTime: [], //展示的当前年月所有数据条
       everyFrees: [],
       everyFree: null,
@@ -63,13 +63,13 @@ export default {
     //数据条
     createDayList() {
       //创建数据条
-      this.timeFreeList = [this.year, this.month, 1, [], 0];
+      this.timeFreeList = [this.year, this.month, 1, []];
 
       //获取特定月的日数组
       let maxDay = new Date(this.year, this.month, 0).getDate();
       for (let iDays = 1; iDays <= maxDay; iDays++) {
         this.timeFreeList[2] = iDays;
-        this.timeFreeList[3] = []; //这么做，才能深拷贝
+        this.timeFreeList[3] = []; //这么做，才能深拷贝。  //动态问题，其实是深拷贝问题啊，毕竟深拷贝后，数组就是新数组，会直接修改
         this.manyTime.push(this.timeFreeList.slice()); //.slice是为了实现数组的深拷贝，其实这种直接对象也是浅拷贝
       }
       this.timeFreeList = [];
@@ -105,7 +105,6 @@ export default {
 
     addFree() {
       this.everyFrees[3].push(this.everyFree); //增加free
-      this.everyFrees[4] += this.everyFree; //改变sum
 
       this.everyFree = null;
     },
@@ -135,6 +134,8 @@ export default {
           publishManyTime.push(item);
         }
       });
+
+      console.log(publishManyTime);
       //现在只能先保存在localStorage
 
       //把temporaryManyTimeList给上传到后端
@@ -146,4 +147,11 @@ export default {
     },
   },
 };
+
+//1. JSON序列化法 适用于无函数、undefined、Symbol、循环引用的简单对象。 const
+// clone1 = JSON.parse(JSON.stringify(obj));
+// obj.info.age = 30;
+// console.log(clone1.info.age); // 20
+
+//要不要弄成对象
 </script>
