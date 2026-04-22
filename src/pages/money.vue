@@ -48,22 +48,19 @@ export default {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
       everyFrees: [], //设置一个数据条:day,[free]
-      disMonth: [], //展示的当前年月所有数据条
-      everyFrees: [],
+      disMonth: [], //展示的当前月所有数据条
       everyFree: null,
-      date: {},
+      date: {}, //存储所有的来自localStorage的年月日数据
       isYear: false,
       isMonth: false,
     };
   },
   mounted() {
-    //先初始化disMonth，后面把date存入disMonth
-    this.createDayList();
     //获取所有的账本数据
     this.date = window.localStorage.getItem("date")
       ? JSON.parse(window.localStorage.getItem("date"))
       : {};
-    // console.log(Object.keys(this.date)); //元素名数组
+
     this.createYear();
     this.createMonth();
 
@@ -72,6 +69,9 @@ export default {
   methods: {
     //数据条
     createDayList() {
+      //清空disMonth
+      this.disMonth = [];
+
       //创建数据条
       this.everyFrees = [1, []];
 
@@ -121,14 +121,35 @@ export default {
       this.everyFrees[1].push(this.everyFree); //增加free
       this.everyFree = null;
       //因为数组地址指向没有变化，所以我不用把修改后的Frees重新删除复制回去。
-      //修改后的直接全保存在disMonth中
+      //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取数据了
+    },
+
+    //保存在localStorage
+    localPublish() {
+      //重新保存回date
+      this.disMonth.map((item) => {
+        //只上传有的
+        if (item[1][0]) {
+          //dismonth每一条的[1,[]]改成date.year.month的每一条{1：[]}。date:{year:{month:{day:[]}}}
+          //并且这个若元素重名，则会替代掉原来的元素，
+          Object.defineProperty(this.date[this.year][this.month], item[0], {
+            value: item[1].slice(),
+            writable: true,
+            enumerable: true,
+            configurable: true,
+          });
+        }
+      });
+      console.log(this.date);
+
+      window.localStorage.setItem("date", JSON.stringify(this.date)); //localStorage只保存字符串，//并且直接替代原date
     },
 
     createYear() {
       if (this.date) {
         Object.keys(this.date).map((item) => {
           if (Number(item) == this.year) {
-            this.isYear = true;
+            this.isYear = true; //不判断就会覆盖原有的date的数据
             return;
           }
         });
@@ -142,9 +163,12 @@ export default {
           configurable: true,
         });
       }
+      this.isYear = false;
     },
 
     createMonth() {
+      this.createDayList(); //初始和切换要清空disMonth，不然会把上个月的带进去。
+
       Object.keys(this.date[this.year]).map((item) => {
         if (Number(item) == this.month) {
           this.isMonth = true;
@@ -152,8 +176,9 @@ export default {
         }
       });
 
-      //判断该月是否存在， 不存在则设置新的
+      //判断该月是否存在，
       if (!this.isMonth) {
+        //不存在则设置新的
         Object.defineProperty(this.date[this.year], this.month, {
           value: {}, //date:{year:{month:{}}}
           writable: true,
@@ -170,32 +195,14 @@ export default {
           });
         });
       }
-    },
 
-    //保存在localStorage
-    localPublish() {
-      //重新保存回date
-      this.disMonth.map((item) => {
-        //只上传有的
-        if (item[1][0]) {
-          //dismonth每一条的[1,[]]改成date.year.month的每一条{1：[]}
-          //并且这个若元素重名，则会替代掉原来的元素
-          Object.defineProperty(this.date[this.year][this.month], item[0], {
-            value: item[1].slice(),
-            writable: true,
-            enumerable: true,
-            configurable: true,
-          });
-        }
-      });
-      console.log(this.date);
-      //并且直接替代原date
-      window.localStorage.setItem("date", JSON.stringify(this.date)); //localStorage只保存字符串
+      this.isMonth = false;
     },
 
     publish() {
-      //全部上传，然后到后端给整理好
+      //把存储在localStorage里的上传到后端
     },
+    //若有后端，每次打开账本，把后端的发送到locaoStorage
   },
 };
 </script>
