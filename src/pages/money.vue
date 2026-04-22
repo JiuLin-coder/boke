@@ -67,7 +67,7 @@ export default {
     this.createYear();
     this.createMonth();
 
-    // console.log(this.date);
+    console.log(this.date);
   },
   methods: {
     //数据条
@@ -111,10 +111,6 @@ export default {
         this.month -= 1;
         this.createMonth();
       }
-      //确保为该月
-      this.disMonth = [];
-      //重新获得日数组
-      this.createDayList();
     },
 
     updateDayFrees(everyFrees) {
@@ -131,7 +127,10 @@ export default {
     createYear() {
       if (this.date) {
         Object.keys(this.date).map((item) => {
-          this.isYear = item == this.year ? true : false;
+          if (Number(item) == this.year) {
+            this.isYear = true;
+            return;
+          }
         });
       }
       if (!this.isYear) {
@@ -146,15 +145,14 @@ export default {
     },
 
     createMonth() {
-      console.log(this.date[this.year]);
-      console.log(Object.keys(this.date[this.year]));
       Object.keys(this.date[this.year]).map((item) => {
-        this.isMonth = Number(item) == this.month;
-        break;
+        if (Number(item) == this.month) {
+          this.isMonth = true;
+          return; //记得若是判断true，立即退出，不然就继续判断，然后又变成false
+        }
       });
 
       //判断该月是否存在， 不存在则设置新的
-      console.log(this.isMonth);
       if (!this.isMonth) {
         Object.defineProperty(this.date[this.year], this.month, {
           value: {}, //date:{year:{month:{}}}
@@ -167,7 +165,6 @@ export default {
         Object.keys(this.date[this.year][this.month]).map((item) => {
           this.disMonth.map((disItem) => {
             if (disItem[0] == item) {
-              console.log(this.date[this.year][this.month]);
               disItem[1] = this.date[this.year][this.month][item].slice();
             }
           });
