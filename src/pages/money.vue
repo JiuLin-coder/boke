@@ -12,7 +12,8 @@
           <div v-for="(item, index) in disMonth" :key="index" class="flex">
             <div>{{ index + 1 }}</div>
             <div>{{ item[1] }}</div>
-            <button v-on:click="updateDayFrees(item)">修改</button>
+            <button v-on:click="addDayFrees(item)">增加</button>
+            <button v-on:click="deleteDayFrees(item)">删除</button>
           </div>
         </div>
       </div>
@@ -29,7 +30,7 @@
         v-model.number="everyFree"
         placeholder="每次输入一个值"
       />
-      <button v-on:click="addFree()">增加</button>
+      <button v-on:click="addFree()">增加free</button>
       <button v-on:click="localPublish()">缓存</button>
       <div></div>
 
@@ -113,7 +114,7 @@ export default {
       }
     },
 
-    updateDayFrees(everyFrees) {
+    addDayFrees(everyFrees) {
       this.everyFrees = everyFrees; //设定特定的数据条，虽然数组指向没有变化
     },
 
@@ -122,6 +123,13 @@ export default {
       this.everyFree = null;
       //因为数组地址指向没有变化，所以我不用把修改后的Frees重新删除复制回去。
       //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取数据了
+    },
+
+    deleteDayFrees(everyFrees) {
+      this.everyFrees = everyFrees;
+      this.everyFrees[1] = [];
+      console.log(this.everyFrees);
+      delete this.date[this.year][this.month][everyFrees[0]]; //date也要删掉
     },
 
     //保存在localStorage
