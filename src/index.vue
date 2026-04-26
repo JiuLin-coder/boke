@@ -13,12 +13,14 @@
   <!-- 内容栏 -->
   <div class="main flex1 flex">
     <!-- <introduction /> -->
-    <money />
+    <!-- <money /> -->
+    <toDoList />
   </div>
 </template>
 
 <script setup>
 import introduction from "./pages/introduction.vue";
+import toDoList from "./pages/toDoList.vue";
 import money from "./pages/money.vue";
 </script>
 
