@@ -13,8 +13,8 @@
   <!-- 内容栏 -->
   <div class="main flex1 flex">
     <!-- <introduction /> -->
-    <!-- <money /> -->
-    <toDoList />
+    <money />
+    <!-- <toDoList /> -->
   </div>
 </template>
 
