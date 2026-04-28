@@ -12,7 +12,7 @@
           <div v-for="(item, index) in disMonth" :key="index" class="flex">
             <div>{{ index + 1 }}</div>
             <div>{{ item[1] }}</div>
-            <button v-on:click="addDayFrees(item)">增加</button>
+            <button v-on:click="getDayFrees(item)">增加</button>
             <button v-on:click="deleteDayFrees(item)">删除</button>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default {
       this.everyFrees = [];
     },
 
-    //动态改变年月
+    //动态改变年月，而年月也只会在缓存的时候使用
     nextMonth(step) {
       if (step) {
         //下一月
@@ -114,7 +114,7 @@ export default {
       }
     },
 
-    addDayFrees(everyFrees) {
+    getDayFrees(everyFrees) {
       this.everyFrees = everyFrees; //设定特定的数据条，虽然数组指向没有变化
     },
 
@@ -122,14 +122,14 @@ export default {
       this.everyFrees[1].push(this.everyFree); //增加free
       this.everyFree = null;
       //因为数组地址指向没有变化，所以我不用把修改后的Frees重新删除复制回去。
-      //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取数据了
+      //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取和保存数据了
     },
 
     deleteDayFrees(everyFrees) {
       this.everyFrees = everyFrees;
       this.everyFrees[1] = [];
       console.log(this.everyFrees);
-      delete this.date[this.year][this.month][everyFrees[0]]; //date也要删掉
+      delete this.date[this.year][this.month][everyFrees[0]]; //date也要删掉，但是这里的date是前端的，还是要点击缓存才能针对localStorage
     },
 
     //保存在localStorage
@@ -157,11 +157,13 @@ export default {
       if (this.date) {
         Object.keys(this.date).map((item) => {
           if (Number(item) == this.year) {
-            this.isYear = true; //不判断就会覆盖原有的date的数据
+            this.isYear = true; //不if就会覆盖原有的date的数据
             return;
           }
         });
       }
+
+      //这里是没有isYear，才执行的
       if (!this.isYear) {
         //初始化缓存的数据列表、  defineProperty是深拷贝，可以用
         Object.defineProperty(this.date, this.year, {
@@ -171,6 +173,7 @@ export default {
           configurable: true,
         });
       }
+
       this.isYear = false;
     },
 
@@ -180,7 +183,7 @@ export default {
       Object.keys(this.date[this.year]).map((item) => {
         if (Number(item) == this.month) {
           this.isMonth = true;
-          return; //记得若是判断true，立即退出，不然就继续判断，然后又变成false
+          return; //节省一下判断次数，
         }
       });
 
@@ -209,8 +212,8 @@ export default {
 
     publish() {
       //把存储在localStorage里的上传到后端
+      //若有后端，每次打开账本，把后端的发送到locaoStorage
     },
-    //若有后端，每次打开账本，把后端的发送到locaoStorage
   },
 };
 </script>
