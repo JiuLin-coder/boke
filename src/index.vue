@@ -1,8 +1,8 @@
 <template>
   <!-- 导航栏 -->
-  <div class="flex jcsb aic shadow mg20">
+  <div class="flex jcsb aic shadow mg20 fs16">
     <RouterLink to="/">首页</RouterLink>
-    <div style="width: 20rem" class="flex jcsb">
+    <div style="width: 40rem" class="flex jcsb">
       <RouterLink to="/">文章</RouterLink>
       <RouterLink to="/">文本编写</RouterLink>
       <RouterLink to="/toDoList">待办事项</RouterLink>
@@ -25,7 +25,7 @@
   border: 1px solid black;
 }
 html {
-  font-size: 20px;
+  font-size: 10px;
 }
 
 /* flex常用css */
@@ -70,25 +70,35 @@ html {
 
 /* 间距常用CSS */
 .mg20 {
-  margin: 1rem;
+  margin: 2rem;
 }
-.mgt20 {
-  margin-top: 1rem;
-}
-.mgl20 {
-  margin-left: 1rem;
-}
-.mg100 {
-  margin: 5rem;
-}
-.mg80 {
+.mg40 {
   margin: 4rem;
 }
-.pd20 {
-  padding: 1rem;
+.mg20 {
+  margin: 2rem;
 }
-
+.mgt20 {
+  margin-top: 2rem;
+}
+.mgl20 {
+  margin-left: 2rem;
+}
+.mg100 {
+  margin: 10rem;
+}
+.mg80 {
+  margin: 8rem;
+}
+.pd20 {
+  padding: 2rem;
+}
+.h100 {
+  height: 100vh;
+}
 /* 字体常用CSS */
-
+.fs16 {
+  font-size: 1.6rem;
+}
 /* 组件常用css */
 </style>
