@@ -1,6 +1,6 @@
 <template>
   <!-- 导航栏 -->
-  <div class="flex jcsb aic shadow mg20 fs16">
+  <div class="flex jcsb aic shadow pd20 fs16">
     <RouterLink to="/">首页</RouterLink>
     <div style="width: 40rem" class="flex jcsb">
       <RouterLink to="/">文章</RouterLink>
@@ -21,9 +21,9 @@
 
 <style>
 /* 统一设置页面背景 */
-* {
+/* * {
   border: 1px solid black;
-}
+} */
 html {
   font-size: 10px;
 }
@@ -101,4 +101,7 @@ html {
   font-size: 1.6rem;
 }
 /* 组件常用css */
+.area {
+  border-bottom: 1px solid rgb(195, 195, 195);
+}
 </style>

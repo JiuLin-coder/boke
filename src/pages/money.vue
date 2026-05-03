@@ -1,41 +1,54 @@
 <template>
   <div class="flex1 flex">
-    <!-- 不知道做什么的 -->
-    <div style="width: 20rem"></div>
+    <!-- 展示月总和 -->
+    <div style="width: 20rem" class="shadow"></div>
     <!-- 展示月的每日数据 -->
-    <div
-      class="flex1 flex column mg40 fs16"
-      style="height: 60rem; overflow: auto"
-    >
-      <div>{{ year }}-{{ month }}</div>
+    <div class="flex1 flex column mg40 fs16 shadow">
+      <div class="flex1 flex jcc aic area">
+        <div>{{ year }}-{{ month }}</div>
+      </div>
       <!-- 一卡片一月，每次只显示一个月 -->
-      <div>
+      <div
+        style="height: 55rem; overflow: auto; scrollbar-width: none"
+        class=""
+      >
         <!-- 每日 -->
-        <div v-for="(item, index) in disMonth" :key="index" class="flex">
-          <div>{{ index + 1 }}</div>
+        <div
+          v-for="(item, index) in disMonth"
+          :key="index"
+          class="flex jcsb area"
+        >
+          <div>{{ ("0" + (index + 1)).slice(-2) }}</div>
           <div>{{ item[1] }}</div>
-          <button v-on:click="getDayFrees(item)">+</button>
-          <button v-on:click="deleteDayFrees(item)">-</button>
+          <div>
+            <button v-on:click="getDayFrees(item)">+</button>
+            <button v-on:click="deleteDayFrees(item)">-</button>
+          </div>
         </div>
       </div>
     </div>
     <!-- 获取数据 -->
-    <div style="width: 30rem">
-      <button v-on:click="nextMonth(0)">上一月</button>
-      <button v-on:click="nextMonth(1)">下一月</button>
+    <div style="width: 30rem" class="flex column jcsa aic shadow">
+      <div>
+        <button v-on:click="nextMonth(0)">上一月</button>
+        <button v-on:click="nextMonth(1)">下一月</button>
+      </div>
 
-      <hr />
-      {{ everyFrees }}
-      <input
-        type="text"
-        v-model.number="everyFree"
-        placeholder="每次输入一个值"
-      />
-      <button v-on:click="addFree()">增加free</button>
-      <button v-on:click="localPublish()">缓存</button>
-      <div></div>
+      <div>
+        <div v-if="!everyFrees[0]">请选择哪一天</div>
+        <div v-else="everyFrees[0]">
+          {{ "0" + everyFrees[0] }}
+          {{ everyFrees[1] || [] }}
+        </div>
+        <input
+          type="text"
+          v-model.number="everyFree"
+          placeholder="每次输入一个值"
+        />
+        <button v-on:click="addFree()">增加free</button>
+        <button v-on:click="localPublish()">缓存</button>
+      </div>
 
-      <hr />
       <button v-on:click="publish()">上传</button>
     </div>
   </div>
@@ -67,6 +80,7 @@ export default {
     this.createMonth();
 
     console.log(this.date);
+    console.log(this.everyFrees);
   },
   methods: {
     //数据条
