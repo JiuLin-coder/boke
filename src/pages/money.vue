@@ -1,25 +1,23 @@
 <template>
   <div class="flex1 flex">
     <!-- 不知道做什么的 -->
-    <div style="width: 200px">{{ year }}-{{ month }}</div>
-    <!-- 展示数据 -->
+    <div style="width: 200px"></div>
+    <!-- 展示月的每日数据 -->
     <div class="flex1 flex column mg80">
+      <div>{{ year }}-{{ month }}</div>
       <!-- 一卡片一月，每次只显示一个月 -->
-      <div class="card">
-        <div></div>
+      <div class="">
         <!-- 每日 -->
-        <div class="flex column">
-          <div v-for="(item, index) in disMonth" :key="index" class="flex">
-            <div>{{ index + 1 }}</div>
-            <div>{{ item[1] }}</div>
-            <button v-on:click="getDayFrees(item)">增加</button>
-            <button v-on:click="deleteDayFrees(item)">删除</button>
-          </div>
+        <div v-for="(item, index) in disMonth" :key="index" class="flex">
+          <div>{{ index + 1 }}</div>
+          <div>{{ item[1] }}</div>
+          <button v-on:click="getDayFrees(item)">+</button>
+          <button v-on:click="deleteDayFrees(item)">-</button>
         </div>
       </div>
     </div>
     <!-- 获取数据 -->
-    <div style="width: 250px">
+    <div>
       <button v-on:click="nextMonth(0)">上一月</button>
       <button v-on:click="nextMonth(1)">下一月</button>
 

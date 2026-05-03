@@ -1,37 +1,34 @@
 <template>
   <!-- 导航栏 -->
-  <div class="header flex jcsb aic shadow">
-    <div>首页</div>
-    <div style="width: 40vh" class="flex jcsb">
-      <div>文章</div>
-      <div>文本编写</div>
-      <div>待办事项</div>
-      <div>账本</div>
+  <div class="flex jcsb aic shadow mg20">
+    <RouterLink to="/">首页</RouterLink>
+    <div style="width: 20rem" class="flex jcsb">
+      <RouterLink to="/">文章</RouterLink>
+      <RouterLink to="/">文本编写</RouterLink>
+      <RouterLink to="/toDoList">待办事项</RouterLink>
+      <RouterLink to="/money">账本</RouterLink>
     </div>
+
     <div>登录/注册</div>
   </div>
   <!-- 内容栏 -->
-  <div class="main flex1 flex">
-    <!-- <introduction /> -->
-    <money />
-    <!-- <toDoList /> -->
+  <div class="flex1 flex">
+    <RouterView />
   </div>
 </template>
 
-<script setup>
-import introduction from "./pages/introduction.vue";
-import toDoList from "./pages/toDoList.vue";
-import money from "./pages/money.vue";
-</script>
+<script setup></script>
 
 <style>
+/* 统一设置页面背景 */
 * {
   border: 1px solid black;
 }
-.header {
-  height: 40px;
-  padding: 20px;
+html {
+  font-size: 20px;
 }
+
+/* flex常用css */
 .flex {
   display: flex;
 }
@@ -53,32 +50,45 @@ import money from "./pages/money.vue";
 .jcse {
   justify-content: space-evenly;
 }
-
+.jcsa {
+  justify-content: space-around;
+}
+.fww {
+  flex-wrap: wrap;
+}
 .tac {
   text-align: center;
 }
+
+/* 颜色常用css */
 .shadow {
   box-shadow:
     rgb(0 0 0 / 20%) 0px 2px 1px -1px,
     rgb(0 0 0 / 14%) 0px 1px 1px 0px,
     rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
+
+/* 间距常用CSS */
 .mg20 {
-  margin: 20px;
+  margin: 1rem;
 }
 .mgt20 {
-  margin-top: 20px;
+  margin-top: 1rem;
 }
 .mgl20 {
-  margin-left: 20px;
+  margin-left: 1rem;
 }
 .mg100 {
-  margin: 100px;
+  margin: 5rem;
 }
 .mg80 {
-  margin: 80px;
+  margin: 4rem;
 }
 .pd20 {
-  padding: 20px;
+  padding: 1rem;
 }
+
+/* 字体常用CSS */
+
+/* 组件常用css */
 </style>

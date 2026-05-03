@@ -32,8 +32,4 @@
 import { ref } from "vue";
 </script>
 
-<style>
-* {
-  border: 1px solid black;
-}
-</style>
+<style></style>
