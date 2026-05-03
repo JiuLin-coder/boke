@@ -2,7 +2,23 @@
   <div class="flex1 flex">
     <!-- 展示月总和 -->
     <div style="width: 20rem" class="shadow">
-      <button v-on:click="clearDate()">清空账本</button>
+      <div>
+        <button v-on:click="clearDate()">清空账本</button>
+      </div>
+
+      <!-- date:{year:{month:{monthSum:0}}} -->
+      <div v-for="(value, key, index) in date" :key="index">
+        {{ key }}
+
+        <div v-for="(value1, key1, index1) in value" :key="index1">
+          {{ key1 }}
+
+          {{ value1.monthSum }}
+          正数：{{ value1.positiveMonthSum }} 负数：{{
+            parseFloat((value1.positiveMonthSum - value1.monthSum).toFixed(3))
+          }}
+        </div>
+      </div>
     </div>
     <!-- 展示月的每日数据 -->
     <div class="flex1 flex column mg40 fs16 shadow">
@@ -64,12 +80,14 @@ export default {
     return {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
+      isYear: false,
+      isMonth: false,
       everyFrees: [], //设置一个数据条:day,[free]
       disMonth: [], //展示的当前月所有数据条
       everyFree: null,
       date: {}, //存储所有的来自localStorage的年月日数据
-      isYear: false,
-      isMonth: false,
+      monthAndSum: {},
+      sum: {},
     };
   },
 
@@ -84,6 +102,7 @@ export default {
     this.updateMonth();
 
     console.log(this.date);
+    this.disMonthList();
   },
 
   methods: {
@@ -228,6 +247,9 @@ export default {
 
     //保存在localStorage
     localPublish() {
+      let monthSum = 0;
+      let positiveMonthSum = 0;
+
       //把disMonth的日数据条保存到date里
       this.disMonth.map((item) => {
         //只上传有的
@@ -240,8 +262,35 @@ export default {
             enumerable: true,
             configurable: true,
           });
+
+          for (let i = 0; i < item[1].length; i++) {
+            monthSum += item[1][i];
+            if (item[1][i] > 0) {
+              positiveMonthSum += item[1][i];
+            }
+          }
         }
       });
+
+      //把sum加到date的month
+      Object.defineProperty(this.date[this.year][this.month], "monthSum", {
+        value: monthSum,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
+      Object.defineProperty(
+        this.date[this.year][this.month],
+        "positiveMonthSum",
+        {
+          value: positiveMonthSum,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+      );
+
+      console.log(this.date[this.year][this.month].monthSum);
       console.log(this.date);
 
       window.localStorage.setItem("date", JSON.stringify(this.date)); //localStorage只保存字符串，//并且直接替代原date
@@ -256,9 +305,14 @@ export default {
       // 刷新当前页面
       history.go(0);
     },
+
+    //把存储在localStorage里的上传到后端
     publish() {
-      //把存储在localStorage里的上传到后端
       //若有后端，每次打开账本，把后端的发送到locaoStorage
+    },
+
+    disMonthList() {
+      //date:{year:{month:{monthSum:0}}}
     },
   },
 };
