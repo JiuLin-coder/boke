@@ -67,7 +67,12 @@ html {
     rgb(0 0 0 / 14%) 0px 1px 1px 0px,
     rgb(0 0 0 / 12%) 0px 1px 3px 0px;
 }
-
+.cr {
+  color: rgb(253, 91, 91);
+}
+.cg {
+  color: #07c160;
+}
 /* 间距常用CSS */
 .mg20 {
   margin: 2rem;
@@ -99,6 +104,9 @@ html {
 /* 字体常用CSS */
 .fs16 {
   font-size: 1.6rem;
+}
+.fs14 {
+  font-size: 1.4rem;
 }
 /* 组件常用css */
 .area {

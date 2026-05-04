@@ -1,22 +1,47 @@
 <template>
   <div class="flex1 flex">
     <!-- 展示月总和 -->
-    <div style="width: 20rem" class="shadow">
-      <div>
+    <div style="width: 30rem" class="shadow">
+      <div class="pd20 flex jcc">
         <button v-on:click="clearDate()">清空账本</button>
       </div>
 
-      <!-- date:{year:{month:{monthSum:0}}} -->
-      <div v-for="(value, key, index) in date" :key="index">
-        {{ key }}
+      <div>
+        <div>
+          <div class="flex jcsa fs14 area">
+            <div>年月</div>
+            <div>收入</div>
+            <div>支出</div>
+            <div>总和</div>
+          </div>
+        </div>
+      </div>
+      <div style="height: 55rem; overflow: auto; scrollbar-width: none">
+        <!-- date:{year:{month:{monthSum:0}}} -->
+        <div v-for="(value, key, index) in date" :key="index">
+          <div v-for="(value1, key1, index1) in value" :key="index1">
+            <!-- 只显示有的 -->
+            <div v-if="value1.positiveMonthSum" class="flex jcsa fs14 area">
+              <div>{{ key }}-{{ ("0" + key1).slice(-2) }}</div>
 
-        <div v-for="(value1, key1, index1) in value" :key="index1">
-          {{ key1 }}
+              <div class="cg">+{{ value1.positiveMonthSum }}</div>
 
-          {{ value1.monthSum }}
-          正数：{{ value1.positiveMonthSum }} 负数：{{
-            parseFloat((value1.positiveMonthSum - value1.monthSum).toFixed(3))
-          }}
+              <div class="cr">{{ value1.monthSum }}</div>
+
+              <div
+                v-if="value1.positiveMonthSum + value1.monthSum > 0"
+                class="cg"
+              >
+                +{{ value1.positiveMonthSum + value1.monthSum }}
+              </div>
+              <div
+                v-if="value1.positiveMonthSum + value1.monthSum < 0"
+                class="cr"
+              >
+                -{{ value1.positiveMonthSum + value1.monthSum }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -26,10 +51,7 @@
         <div>{{ year }}-{{ month }}</div>
       </div>
       <!-- 一卡片一月，每次只显示一个月 -->
-      <div
-        style="height: 55rem; overflow: auto; scrollbar-width: none"
-        class=""
-      >
+      <div style="height: 55rem; overflow: auto; scrollbar-width: none">
         <!-- 每日 -->
         <div
           v-for="(item, index) in disMonth"
@@ -37,10 +59,13 @@
           class="flex jcsb area"
         >
           <div>{{ ("0" + (index + 1)).slice(-2) }}</div>
-          <div>{{ item[1] }}</div>
+          <div v-for="(item1, index) in item[1]" :key="index">
+            <div v-if="item1 > 0" class="cg">+{{ item1 }}</div>
+            <div v-if="item1 < 0" class="cr">{{ item1 }}</div>
+          </div>
           <div>
-            <button v-on:click="getDayFrees(item)">+</button>
-            <button v-on:click="deleteDayFrees(item)">-</button>
+            <button v-on:click="getDayFrees(item)">增加</button>
+            <button v-on:click="deleteDayFrees(item)">删除</button>
           </div>
         </div>
       </div>
@@ -63,7 +88,8 @@
           v-model.number="everyFree"
           placeholder="每次输入一个值"
         />
-        <button v-on:click="addFree()">增加free</button>
+        <button v-on:click="addFree(1)">+</button>
+        <button v-on:click="addFree(-1)">-</button>
         <button v-on:click="localPublish()">缓存</button>
       </div>
 
@@ -86,26 +112,25 @@ export default {
       disMonth: [], //展示的当前月所有数据条
       everyFree: null,
       date: {}, //存储所有的来自localStorage的年月日数据
-      monthAndSum: {},
-      sum: {},
     };
   },
 
-  //初始化
+  //打开时调用
   mounted() {
-    //获取所有的账本数据
-    this.date = window.localStorage.getItem("date")
-      ? JSON.parse(window.localStorage.getItem("date"))
-      : {};
-
-    this.updateYear();
-    this.updateMonth();
-
-    console.log(this.date);
-    this.disMonthList();
+    this.init();
   },
 
   methods: {
+    //初始化
+    init() {
+      //获取所有的账本数据
+      this.date = window.localStorage.getItem("date")
+        ? JSON.parse(window.localStorage.getItem("date"))
+        : {};
+
+      this.updateYear();
+      this.updateMonth();
+    },
     //初始化date的年
     updateYear() {
       if (this.date) {
@@ -217,7 +242,7 @@ export default {
     },
 
     //给disMonth的数据条增加数据
-    addFree() {
+    addFree(is) {
       if (!this.everyFrees[0]) {
         window.alert("请选择哪一天");
         return;
@@ -227,7 +252,7 @@ export default {
         return;
       }
 
-      this.everyFrees[1].push(this.everyFree); //增加free
+      this.everyFrees[1].push(is * this.everyFree); //增加free
       this.everyFree = null;
       //因为数组地址指向没有变化，所以我不用把修改后的Frees重新删除复制回去。
       //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取和保存数据了
@@ -264,21 +289,16 @@ export default {
           });
 
           for (let i = 0; i < item[1].length; i++) {
-            monthSum += item[1][i];
             if (item[1][i] > 0) {
               positiveMonthSum += item[1][i];
+            } else {
+              monthSum += item[1][i];
             }
           }
         }
       });
 
-      //把sum加到date的month
-      Object.defineProperty(this.date[this.year][this.month], "monthSum", {
-        value: monthSum,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
+      //把总正数和总负数加到date的month
       Object.defineProperty(
         this.date[this.year][this.month],
         "positiveMonthSum",
@@ -289,11 +309,19 @@ export default {
           configurable: true,
         },
       );
+      Object.defineProperty(this.date[this.year][this.month], "monthSum", {
+        value: monthSum,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
 
       console.log(this.date[this.year][this.month].monthSum);
       console.log(this.date);
 
       window.localStorage.setItem("date", JSON.stringify(this.date)); //localStorage只保存字符串，//并且直接替代原date
+
+      this.init();
     },
 
     //清空本地缓存的账本
@@ -302,17 +330,14 @@ export default {
         return;
       }
       window.localStorage.removeItem("date");
-      // 刷新当前页面
-      history.go(0);
+
+      this.init();
     },
 
     //把存储在localStorage里的上传到后端
     publish() {
       //若有后端，每次打开账本，把后端的发送到locaoStorage
-    },
-
-    disMonthList() {
-      //date:{year:{month:{monthSum:0}}}
+      window.alert("未开放此功能");
     },
   },
 };
