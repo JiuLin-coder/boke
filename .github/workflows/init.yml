@@ -1,6 +1,8 @@
+name: 打包vue项目
 on: push
 
 jobs:
+  name: npm-build工作
   npm-build:
     runs-on: ubuntu-latest
     steps:
