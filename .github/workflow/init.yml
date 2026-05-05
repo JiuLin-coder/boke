@@ -1,9 +1,1 @@
-name: 打包
 on: push
-
-jobs:
-  npm-bulid:
-    runs-on: ubuntu-latest
-    steps:
-      - run: pwd
-      - run: npm --version
