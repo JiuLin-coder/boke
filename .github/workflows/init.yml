@@ -19,8 +19,8 @@ jobs:
           npm install
           npm run build
 
-      # - name: 部署
-      #   uses: JamesIves/github-pages-deploy-action@4
-      #   with:
-      #     branch: gh-pages
-      #     folder: dist
+      - name: 部署
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build
