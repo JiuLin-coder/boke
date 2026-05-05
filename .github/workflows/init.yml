@@ -23,4 +23,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist
+          folder: dist  #这个文件夹取决于你打包工具最终的文件夹命名，所以最好现在本地测试最终生产环境的文件夹叫什么
+          

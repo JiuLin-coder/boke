@@ -4,6 +4,7 @@
   "description": "My website",
   "author": "JiuLin",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
