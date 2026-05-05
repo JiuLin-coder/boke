@@ -2,7 +2,7 @@ name: 打包vue项目
 
 on: push
 
-permissions: 
+permissions:
   contents: write
 
 jobs:
@@ -11,17 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 检查仓库内容
-        uses: actions/checkout@v4
-      
+      # - name: 检查仓库内容
+      #   uses: actions/checkout@v4
+
       - name: 库安装和打包
-        run: | 
+        run: |
           npm install
           npm run build
-      
-      - name: 部署
-        uses: JamesIves/github-pages-deploy-action@4
-        with:
-          branch: gh-pages
-          folder: dist
 
+      # - name: 部署
+      #   uses: JamesIves/github-pages-deploy-action@4
+      #   with:
+      #     branch: gh-pages
+      #     folder: dist
