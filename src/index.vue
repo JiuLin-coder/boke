@@ -108,6 +108,9 @@ html {
 .fs14 {
   font-size: 1.4rem;
 }
+.fs12 {
+  font-size: 1.2rem;
+}
 /* 组件常用css */
 .area {
   border-bottom: 1px solid rgb(195, 195, 195);
