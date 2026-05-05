@@ -1,1 +1,8 @@
 on: push
+
+jobs:
+  npm-build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pwd
+      - run: node --version
