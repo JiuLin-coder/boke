@@ -5,7 +5,11 @@ import path from "path";
 async function server(req, res) {
   try {
     const { method, url, headers } = req;
+
     let filePath = decodeURI(url);
+    if (filePath === "/") {
+      filePath = "/index.html";
+    }
 
     const mimeTypes = {
       ".html": "text/html",
@@ -13,12 +17,6 @@ async function server(req, res) {
       ".js": "application/javascript",
       ".json": "application/json",
     };
-    if (filePath === "/") {
-      res.writeHead(200, { "Content-Type": "text/html" });
-      res.end(fs.readFileSync("./dist/index.html"));
-      return; //记得res.end后面要结束函数，不然就向下执行了
-    }
-
     const ext = path.extname(filePath);
 
     const contentType = mimeTypes[ext] || "application/octet-stream";
