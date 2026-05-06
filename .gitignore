@@ -7,5 +7,3 @@ node_modules/
 /cssBak.css
 
 dist/
-
-localNet.js
