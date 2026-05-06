@@ -17,7 +17,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+
+</script>
 
 <style>
 /* 统一设置页面背景 */
