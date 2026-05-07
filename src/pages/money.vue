@@ -87,9 +87,9 @@
           type="text"
           v-model.number="everyFree"
           placeholder="每次输入一个值"
+          @keydown.enter="addFree()"
         />
-        <button v-on:click="addFree(1)">+</button>
-        <button v-on:click="addFree(-1)">-</button>
+        <button v-on:click="addFree()">+</button>
         <button v-on:click="localPublish()">缓存</button>
       </div>
 
@@ -242,7 +242,7 @@ export default {
     },
 
     //给disMonth的数据条增加数据
-    addFree(is) {
+    addFree() {
       if (!this.everyFrees[0]) {
         window.alert("请选择哪一天");
         return;
@@ -252,7 +252,7 @@ export default {
         return;
       }
 
-      this.everyFrees[1].push(is * this.everyFree); //增加free
+      this.everyFrees[1].push(this.everyFree); //增加free
       this.everyFree = null;
       //因为数组地址指向没有变化，所以我不用把修改后的Frees重新删除复制回去。
       //修改后的直接全保存在disMonth中，disMonth的作用就从展示数据，到获取和保存数据了
