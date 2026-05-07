@@ -1,9 +1,9 @@
-name: 打包vue项目
+name: 打包并部署vue项目
 
 on: push
 
 permissions:
-  contents: write
+  contents: write #使用这个部署库必须的配置
 
 jobs:
   npm-build:
@@ -12,9 +12,9 @@ jobs:
 
     steps:
       - name: 检查仓库内容
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 #若无这个，则无法定位仓库内容，几乎是必须的库
 
-      - name: 库安装和打包
+      - name: 安装库和打包
         run: |
           npm install
           npm run build
@@ -22,6 +22,6 @@ jobs:
       - name: 部署
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist  #这个文件夹取决于你打包工具最终的文件夹命名，所以最好现在本地测试最终生产环境的文件夹叫什么
-          
+          branch: gh-pages #有则修改，没有这个分支则新建再修改
+          folder: dist #这个文件夹取决于你打包工具最终的文件夹命名，所以最好现在本地测试最终生产环境的文件夹叫什么
+
