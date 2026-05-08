@@ -65,7 +65,7 @@
           </div>
           <div>
             <button v-on:click="getDayFrees(item)">增加</button>
-            <button v-on:click="deleteDayFrees(item)">删除</button>
+            <button v-on:click="deleteDayFrees(item)">清空</button>
           </div>
         </div>
       </div>
