@@ -275,6 +275,8 @@ export default {
 
     //保存在localStorage
     localPublish() {
+      this.whoActive = 0;
+
       let monthSum = 0;
       let positiveMonthSum = 0;
 
