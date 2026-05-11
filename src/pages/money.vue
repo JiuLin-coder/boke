@@ -57,8 +57,9 @@
           v-for="(item, index) in disMonth"
           :key="index"
           class="flex jcsb area"
+          :class="{ activeColor: whoActive == item[0] }"
         >
-          <div>{{ ("0" + (index + 1)).slice(-2) }}</div>
+          <div>{{ ("0" + item[0]).slice(-2) }}</div>
           <div v-for="(item1, index) in item[1]" :key="index">
             <div v-if="item1 > 0" class="cg">+{{ item1 }}</div>
             <div v-if="item1 < 0" class="cr">{{ item1 }}</div>
@@ -80,7 +81,7 @@
       <div>
         <div v-if="!everyFrees[0]">请选择哪一天</div>
         <div v-else="everyFrees[0]">
-          {{ "0" + everyFrees[0] }}
+          {{ ("0" + everyFrees[0]).slice(-2) }}
           {{ everyFrees[1] || [] }}
         </div>
         <input
@@ -112,6 +113,7 @@ export default {
       disMonth: [], //展示的当前月所有数据条
       everyFree: null,
       date: {}, //存储所有的来自localStorage的年月日数据
+      whoActive: 0,
     };
   },
 
@@ -239,6 +241,7 @@ export default {
     //获得特定disMonth的数据条，虽然数组指向没有变化
     getDayFrees(everyFrees) {
       this.everyFrees = everyFrees;
+      this.whoActive = everyFrees[0];
     },
 
     //给disMonth的数据条增加数据
@@ -272,6 +275,8 @@ export default {
 
     //保存在localStorage
     localPublish() {
+      this.whoActive = 0;
+
       let monthSum = 0;
       let positiveMonthSum = 0;
 
@@ -342,3 +347,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.activeColor {
+  background-color: rgb(255, 225, 0);
+}
+</style>
