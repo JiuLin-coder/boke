@@ -7,15 +7,13 @@
           src="../../public/jiulin.png"
           style="height: 100px; width: 100px"
         />
-        <div>嗨，我是JiuLin!</div>
+        <div>嗨，</div>
       </div>
       <!-- 右区 -->
       <div style="flex: 4" class="mgl20">
         <!-- 关于我 -->
         <div>
-          <div>
-            我是一名普通的大学生，我错过了很多东西，现在我希望不断地去积累，改变。
-          </div>
+          <div></div>
         </div>
         <!-- 我留言 -->
         <div>这个世界是有迹可循的。</div>

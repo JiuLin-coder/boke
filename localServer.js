@@ -5,9 +5,9 @@ import path from "path";
 async function server(req, res) {
   try {
     const { method, url, headers } = req;
+    let filePath = decodeURI(url);
 
     //把请求的url转换成 ，后端文件夹（就是这里的文件夹）的文件的相对路径
-    let filePath = decodeURI(url);
     if (filePath === "/") {
       filePath = "./dist/index.html";
     } else {
